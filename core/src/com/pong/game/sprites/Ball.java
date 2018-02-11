@@ -1,17 +1,21 @@
 package com.pong.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
+import com.pong.game.ScoreObserver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by agava on 26.01.2018.
  */
 
-public class Ball {
+public class Ball extends Observable {
     private static final Ball INSTANCE = new Ball();
     private int speed;
     private Texture ball;
@@ -20,6 +24,8 @@ public class Ball {
     private boolean direction;
     private boolean up;
     private Rectangle bounds;
+
+    private List<ScoreObserver> observers = new ArrayList<ScoreObserver>();
 
     private Ball (){
         velocity = new Vector2(0,0);
@@ -89,5 +95,20 @@ public class Ball {
 
     public void dispose(){
         ball.dispose();
+    }
+
+    //observer-related functions
+    public void addObserver(ScoreObserver observer){
+        observers.add(observer);
+    }
+
+    public void notifyObservers(){
+        for (ScoreObserver o:
+             observers) {
+            o.update(INSTANCE);
+        }
+    }
+    public void removeObserver(ScoreObserver observer){
+        observers.remove(observer);
     }
 }
