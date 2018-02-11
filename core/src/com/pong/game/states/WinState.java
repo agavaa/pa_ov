@@ -20,7 +20,7 @@ public class WinState extends State {
     public void handleInput() {
         if(Gdx.input.justTouched()){
             dispose();
-            gsm.set(new PlayState(gsm));
+
         }
     }
 

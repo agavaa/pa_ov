@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
+import com.pong.game.PositionObserver;
 import com.pong.game.sprites.Ball;
 import com.pong.game.sprites.Paddle;
 
@@ -12,7 +14,7 @@ import com.pong.game.sprites.Paddle;
  * Created by agava on 26.01.2018.
  */
 
-public class PlayState extends State {
+public class PlayState extends State implements PositionObserver {
     private Ball ball;
     private Paddle paddle1;
     private Paddle paddle2;
@@ -25,6 +27,7 @@ public class PlayState extends State {
         super(gsm);
         ball = Ball.getInstance();
         ball.setPosition(MyPongGame.WIDTH/2,MyPongGame.HEIGHT/2-10);
+        ball.addObserver(this);
         paddle1 = new Paddle(5,50);
         paddle2 = new Paddle(MyPongGame.WIDTH-30,50);
         score1 = 0;
@@ -49,19 +52,9 @@ public class PlayState extends State {
         }
     }
 
+    //implements positionChanged method from PositionObserver to change score when the ball hits left or right wall
     @Override
-    public void update(float dt) {
-        ball.update(dt);
-        paddle1.update(dt);
-        paddle2.update(dt);
-        handleInput();
-        if (ball.collides(paddle1.getBounds())){
-            ball.setDirection(false);
-        }
-        if (ball.collides(paddle2.getBounds())){
-            ball.setDirection(true);
-        }
-
+    public void positionChanged(Ball ball, Vector2 position) {
         if (ball.getPosition().x <=0){
             score2++;
             ball.setPosition(MyPongGame.WIDTH/2, MyPongGame.HEIGHT/2);
@@ -74,6 +67,35 @@ public class PlayState extends State {
         if(score1==21 || score2==21){
             gsm.set(new WinState(gsm));
         }
+    }
+
+    @Override
+    public void update(float dt) {
+        ball.update(dt);
+        paddle1.update(dt);
+        paddle2.update(dt);
+        handleInput();
+        if (ball.collides(paddle1.getBounds())){
+            ball.setDirection(false);
+        }
+        if (ball.collides(paddle2.getBounds())){
+            ball.setDirection(true);
+        }
+        ball.getPosition();
+/*
+        if (ball.getPosition().x <=0){
+            score2++;
+            ball.setPosition(MyPongGame.WIDTH/2, MyPongGame.HEIGHT/2);
+        }
+
+        if (ball.getPosition().x >= MyPongGame.WIDTH-ball.getBall().getWidth()){
+            score1++;
+            ball.setPosition(MyPongGame.WIDTH/2, MyPongGame.HEIGHT/2);
+        }
+        if(score1==21 || score2==21){
+            gsm.set(new WinState(gsm));
+        }
+        */
     }
 
     @Override
