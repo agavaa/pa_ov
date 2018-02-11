@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
 import com.pong.game.PositionObserver;
-import com.pong.game.ScoreObserver;
 
 import java.util.ArrayList;
 import java.util.List;
