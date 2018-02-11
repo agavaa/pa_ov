@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
+import com.pong.game.PositionObserver;
 import com.pong.game.ScoreObserver;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Ball extends Observable {
     private boolean up;
     private Rectangle bounds;
 
-    private List<ScoreObserver> observers = new ArrayList<ScoreObserver>();
+    private List<PositionObserver> observers = new ArrayList<PositionObserver>();
 
     private Ball (){
         velocity = new Vector2(0,0);
@@ -65,6 +66,9 @@ public class Ball extends Observable {
         if (position.y<=0){
             up = true;
         }
+        if (position.x <=0 || position.x >= MyPongGame.WIDTH-ball.getWidth()){
+            notifyObservers();
+        }
 
     }
 
@@ -98,17 +102,20 @@ public class Ball extends Observable {
     }
 
     //observer-related functions
-    public void addObserver(ScoreObserver observer){
+
+    //adds an observed to this observed
+    public void addObserver(PositionObserver observer){
         observers.add(observer);
     }
 
+    //notifies observers about relevant changes in position
     public void notifyObservers(){
-        for (ScoreObserver o:
-             observers) {
-            o.update(INSTANCE);
-        }
+            for (PositionObserver o:
+                    observers) {
+                o.positionChanged(INSTANCE, position);
+            }
     }
-    public void removeObserver(ScoreObserver observer){
+    public void removeObserver(PositionObserver observer){
         observers.remove(observer);
     }
 }
