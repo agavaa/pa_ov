@@ -5,17 +5,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
+import com.pong.game.PositionObservable;
 import com.pong.game.PositionObserver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
+
 
 /**
  * Created by agava on 26.01.2018.
  */
 
-public class Ball extends Observable {
+public class Ball extends PositionObservable{
     private static final Ball INSTANCE = new Ball();
     private int speed;
     private Texture ball;
@@ -100,7 +101,7 @@ public class Ball extends Observable {
         ball.dispose();
     }
 
-    //observer-related functions
+    //observable-related functions
 
     //adds an observed to this observed
     public void addObserver(PositionObserver observer){
