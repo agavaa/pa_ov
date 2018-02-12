@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.pong.game.MyPongGame;
+import com.pong.game.PositionObservable;
 import com.pong.game.PositionObserver;
 import com.pong.game.sprites.Ball;
 import com.pong.game.sprites.Paddle;
@@ -54,7 +55,7 @@ public class PlayState extends State implements PositionObserver {
 
     //implements positionChanged method from PositionObserver to change score when the ball hits left or right wall
     @Override
-    public void positionChanged(Ball ball, Vector2 position) {
+    public void positionChanged(PositionObservable positionObservable, Vector2 position) {
         if (ball.getPosition().x <=0){
             score2++;
             ball.setPosition(MyPongGame.WIDTH/2, MyPongGame.HEIGHT/2);
