@@ -8,5 +8,5 @@ import com.pong.game.sprites.Ball;
  */
 
 public interface PositionObserver {
-    void positionChanged(Ball ball, Vector2 position);
+    void positionChanged(PositionObservable positionObservable, Vector2 position);
 }
